@@ -9,9 +9,25 @@ import SwiftUI
 
 @main
 struct HPTriviaApp: App {
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
-        }
-    }
+	var body: some Scene {
+		WindowGroup {
+			ContentView()
+		}
+	}
 }
+
+
+/**
+ App Dev Plan
+ --Game Intro Screen
+ -- Gameplay Screen
+ -- Game Logic
+ -- Audio
+ -- Animations
+ --In-app purchases
+ -- Store
+ -- Instructions Screen
+ --Books
+ -- Persist Scores
+ **/
+
