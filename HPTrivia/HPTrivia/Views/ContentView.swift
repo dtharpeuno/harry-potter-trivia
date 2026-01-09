@@ -8,6 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
+	
+	@State private var animateViewIn = false
+	
     var body: some View {
 		GeometryReader {
 			geo in
@@ -23,10 +26,37 @@ struct ContentView: View {
 					} animation: { _ in
 							.linear(duration: 30)
 					}
+				
+				VStack {
+					VStack {
+						if animateViewIn {
+							VStack {
+								Image(systemName: "bolt.fill")
+									.imageScale(.large)
+									.font(.largeTitle)
+								
+								Text("HP")
+									.font(.custom("PartyLetPlain", size: 70))
+									.padding(.bottom, -50)
+								
+								Text("Trivia")
+									.font(.custom("PartyLetPlain", size: 60))
+							}
+							.padding(.top, 70)
+							.transition(.move(edge: .top))
+						}
+					}
+					.animation(.easeInOut(duration: 0.7).delay(2), value: animateViewIn)
+					
+					Spacer()
+				}
 			}
 			.frame(width: geo.size.width, height: geo.size.height)
 		}
 		.ignoresSafeArea()
+		.onAppear{
+			animateViewIn = true
+		}
     }
 }
 
