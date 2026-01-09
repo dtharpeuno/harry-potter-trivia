@@ -11,6 +11,7 @@ import AVKit
 struct ContentView: View {
 	@State private var audioPlayer: AVAudioPlayer? = nil
 	@State private var animateViewIn = false
+	@State private var scalePlayButton = false
 	
     var body: some View {
 		GeometryReader {
@@ -45,6 +46,37 @@ struct ContentView: View {
 							}
 							.padding(.top, 70)
 							.transition(.move(edge: .top))
+						}
+					}
+					.animation(.easeInOut(duration: 0.7).delay(2), value: animateViewIn)
+					
+					Spacer()
+					
+					Spacer()
+					
+					Spacer()
+					
+					VStack {
+						if animateViewIn {
+							Button {
+								
+							} label: {
+								Text("Play")
+									.font(.largeTitle)
+									.foregroundStyle(.white)
+									.padding(.vertical, 7)
+									.padding(.horizontal, 50)
+									.background(.brown)
+									.clipShape(.rect(cornerRadius: 7))
+									.shadow(radius: 5)
+									.scaleEffect(scalePlayButton ? 1.2 : 1)
+									.onAppear{
+										withAnimation(.easeInOut(duration: 1.3).repeatForever()) {
+											scalePlayButton.toggle()
+										}
+									}
+							}
+							.transition(.offset(y: geo.size.height/3))
 						}
 					}
 					.animation(.easeInOut(duration: 0.7).delay(2), value: animateViewIn)
