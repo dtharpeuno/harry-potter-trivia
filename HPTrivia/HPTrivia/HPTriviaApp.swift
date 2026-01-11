@@ -26,7 +26,7 @@ struct HPTriviaApp: App {
  -- Animations
  --In-app purchases
  -- Store
- -- Instructions Screen - started
+ -- Instructions Screen - started - done
  --Books
  -- Persist Scores
  **/
