@@ -55,7 +55,24 @@ struct ContentView: View {
 					
 					Spacer()
 					
-					Spacer()
+					VStack {
+						if animateViewIn {
+							VStack {
+								Text("Recent Scores")
+									.font(.title2)
+								Text("33")
+								Text("27")
+								Text("15")
+							}
+							.font(.title3)
+							.foregroundStyle(.white)
+							.padding(.horizontal)
+							.background(.black.opacity(0.7))
+							.clipShape(.rect(cornerRadius: 15))
+							.transition(.opacity)
+						}
+					}
+					.animation(.linear(duration: 1).delay(4), value: animateViewIn)
 					
 					Spacer()
 					
@@ -133,7 +150,7 @@ struct ContentView: View {
 		.ignoresSafeArea()
 		.onAppear{
 			animateViewIn = true
-//			playAudio()
+			playAudio()
 		}
 		.sheet(isPresented: $showInstructions) {
 				Instructions()
@@ -150,4 +167,5 @@ struct ContentView: View {
 
 #Preview {
 	ContentView()
+		.preferredColorScheme(.dark)
 }
