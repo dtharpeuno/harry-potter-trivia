@@ -22,7 +22,7 @@ struct RecentScores: View {
 				}
 				.font(.title3)
 				.foregroundStyle(.white)
-				.padding(.horizontal)
+				.padding(.horizontal, 10)
 				.background(.black.opacity(0.7))
 				.clipShape(.rect(cornerRadius: 15))
 				.transition(.opacity)
