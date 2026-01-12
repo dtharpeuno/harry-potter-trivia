@@ -11,7 +11,19 @@ struct SelectBooks: View {
 	@Environment(\.dismiss) private var dismiss
 	@Environment(Game.self) private var game
 	
-    var body: some View {
+	@State private var showTempAlert = false
+	
+	var activeBooks: Bool {
+		for book in game.bookQuestions.books {
+			if book.status == .active {
+				return true
+			}
+		}
+		
+		return false
+	}
+	
+	var body: some View {
 		ZStack {
 			Image(.parchment)
 				.resizable()
@@ -29,40 +41,32 @@ struct SelectBooks: View {
 						ForEach(game.bookQuestions.books) {
 							book in
 							if book.status == .active {
-								ZStack(alignment: .bottomTrailing) {
-									Image(book.image)
-										.resizable()
-										.scaledToFit()
-										.shadow(radius: 7)
-									
-									Image(systemName: "checkmark.circle.fill")
-										.font(.largeTitle)
-										.imageScale(.large)
-										.foregroundStyle(.green)
-										.shadow(radius: 1)
-										.padding(3)
-									
-								}
+								ActiveBook(book: book)
+									.onTapGesture {
+										game.bookQuestions.changeStatus(of: book.id, to: .inactive)
+									}
 							} else if book.status == .inactive {
-								ZStack {
-									Image(book.image)
-										.resizable()
-										.scaledToFit()
-										.shadow(radius: 7)
-									
-								}
+								InactiveBook(book: book)
+									.onTapGesture {
+										game.bookQuestions.changeStatus(of: book.id, to: .active)
+									}
 							} else {
-								ZStack {
-									Image(book.image)
-										.resizable()
-										.scaledToFit()
-										.shadow(radius: 7)
-									
+								LockedBook(book: book)
+								.onTapGesture {
+									// adding in app purchases before
+									showTempAlert.toggle()
+									game.bookQuestions.changeStatus(of: book.id, to: .active)
 								}
+								
 							}
 						}
 					}
 					.padding()
+				}
+				
+				if !activeBooks {
+					Text("You must select at least 1 book.")
+						.multilineTextAlignment(.center)
 				}
 				
 				Button("Done") {
@@ -72,10 +76,14 @@ struct SelectBooks: View {
 				.padding()
 				.buttonStyle(.borderedProminent)
 				.tint(.brown.mix(with: .black, by: 0.2 ))
+				.disabled(!activeBooks)
 				
 			}
+			.foregroundStyle(.black)
 		}
-		.foregroundStyle(.black)
+		.interactiveDismissDisabled()
+		.alert("You purchased a new questions pack!!", isPresented: $showTempAlert) {
+		}
     }
 }
 
