@@ -13,8 +13,8 @@ class BookQuestions {
 	
 	init() {
 		let decodedQuestions = decodeQuestions()
-		let organizsedQuestions = organizeQuestions(decodedQuestions)
-		populateBooks(with: organizsedQuestions)
+		let organizedQuestions = organizeQuestions(decodedQuestions)
+		populateBooks(with: organizedQuestions)
 	}
 	
 	private func decodeQuestions() -> [Question]{

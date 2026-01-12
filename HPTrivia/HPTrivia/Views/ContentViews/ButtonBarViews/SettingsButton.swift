@@ -29,6 +29,9 @@ struct SettingsButton: View {
 			}
 		}
 		.animation(.easeOut(duration: 0.7).delay(2.7), value: animateViewIn)
+		.sheet(isPresented: $showSettings) {
+			SelectBooks()
+		}
     }
 }
 
@@ -36,5 +39,6 @@ struct SettingsButton: View {
 	GeometryReader {
 		geo in
 		SettingsButton(animateViewIn: .constant(true), geo: geo)
+			.environment(Game())
 	}
 }
