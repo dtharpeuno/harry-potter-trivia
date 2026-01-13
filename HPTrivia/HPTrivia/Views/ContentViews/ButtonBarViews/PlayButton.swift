@@ -9,8 +9,8 @@ import SwiftUI
 
 struct PlayButton: View {
 	@Binding var animateViewIn: Bool
+	@Binding var playGame: Bool
 	
-	@State private var playGame = false
 	@State private var scalePlayButton = false
 	
 	let geo: GeometryProxy
@@ -47,6 +47,6 @@ struct PlayButton: View {
 #Preview {
 	GeometryReader{
 		geo in
-		PlayButton(animateViewIn: .constant(true), geo: geo)
+		PlayButton(animateViewIn: .constant(true), playGame: .constant(false), geo: geo)
 	}
 }
