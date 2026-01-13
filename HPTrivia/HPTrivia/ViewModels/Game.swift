@@ -17,7 +17,11 @@ class Game {
 	
 	var activeQuestions: [Question] = []
 	var answeredQuestions: [Int] = []
-	var currentQuestion: Question
+	var currentQuestion: Question = try! JSONDecoder().decode(
+		[Question].self, from: Data(contentsOf: Bundle.main.url(
+			forResource: "trivia", withExtension: "json")!
+		)
+	)[0]
 	var answers: [String] = []
 	
 	func startGame() {
@@ -70,14 +74,6 @@ class Game {
 		gamesScore = 0
 		activeQuestions = []
 		answeredQuestions = []
-	}
-	
-	init() {
-		currentQuestion = try! JSONDecoder().decode(
-			[Question].self, from: Data(contentsOf: Bundle.main.url(
-				forResource: "trivia", withExtension: "json")!
-			)
-		)[0]
 	}
 	
 }
