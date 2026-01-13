@@ -7,7 +7,7 @@
 
 struct Question: Decodable {
 	let id: Int
-//	let condition: String
+	let question: String
 	let answer: String
 	let wrong: [String]
 	let book: Int
