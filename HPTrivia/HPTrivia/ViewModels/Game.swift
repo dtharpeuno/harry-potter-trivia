@@ -63,7 +63,10 @@ class Game {
 		
 		answeredQuestions.append(currentQuestion.id)
 		
-		gamesScore += questionScore
+		withAnimation {
+			gamesScore += questionScore
+		}
+	
 	}
 	
 	func endGame() {
