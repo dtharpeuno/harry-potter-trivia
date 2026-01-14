@@ -18,6 +18,7 @@ struct GamePlay: View {
 	@State private var animateViewIn = false
 	@State private var revealHint = false
 	@State private var revealBook = false
+	@State private var tappedCorrectAnswer = false
 	
     var body: some View {
 		GeometryReader{
@@ -156,6 +157,52 @@ struct GamePlay: View {
 					.padding()
 					
 					// MARK: Answers
+					LazyVGrid(columns: [GridItem(), GridItem()]) {
+						ForEach(game.answers, id: \.self) {
+							answer in
+							if answer == game.currentQuestion.answer {
+								VStack {
+									if  animateViewIn {
+										Button {
+											tappedCorrectAnswer = true
+											playCorrectSound()
+											game.correct()
+										} label: {
+											Text(answer)
+												.minimumScaleFactor(0.5)
+												.multilineTextAlignment(.center)
+												.padding(20)
+												.frame(width: geo.size.width/2.15, height: 80)
+												.background(.green.opacity(0.5))
+												.clipShape(.rect(cornerRadius: 25))
+										}
+										.transition(.scale)
+									}
+								}
+								.animation(.easeOut(duration: 1).delay(1.5), value: animateViewIn)
+							} else {
+								VStack {
+									if  animateViewIn {
+										Button {
+											playWrongSound()
+											game.questionScore -= 1
+										} label: {
+											Text(answer)
+												.minimumScaleFactor(0.5)
+												.multilineTextAlignment(.center)
+												.padding(20)
+												.frame(width: geo.size.width/2.15, height: 80)
+												.background(.green.opacity(0.5))
+												.clipShape(.rect(cornerRadius: 25))
+										}
+										.transition(.scale)
+									}
+								}
+								.animation(.easeOut(duration: 1).delay(1.5), value: animateViewIn)
+							}
+						}
+					}
+					
 					Spacer()
 				}
 				.frame(width: geo.size.width, height: geo.size.height)
