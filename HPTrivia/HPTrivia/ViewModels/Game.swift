@@ -24,6 +24,13 @@ class Game {
 	)[0]
 	var answers: [String] = []
 	
+	let savePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appending(path: "RecentScores")
+	
+	init(
+		loadScores()
+	)
+	
+	
 	func startGame() {
 		for book in bookQuestions.books {
 			if book.status == .active {
@@ -66,17 +73,35 @@ class Game {
 		withAnimation {
 			gamesScore += questionScore
 		}
-	
+		
 	}
 	
 	func endGame() {
 		recentScores[2] = recentScores[1]
 		recentScores[1] = recentScores[0]
 		recentScores[0] = gamesScore
+		saveScores()
 		
 		gamesScore = 0
 		activeQuestions = []
 		answeredQuestions = []
 	}
 	
+	func saveScores() {
+		do {
+			let data = try JSONEncoder().encode(recentScores)
+			try data.write(to: savePath)
+		} catch {
+			print("Error: \(error)")
+		}
+	}
+	
+	func loadScores() {
+		do {
+			let data = try Data(contentsOf: savePath)
+			recentScores = try JSONDecoder().decode([Int].self, from: data)
+		} catch {
+			var recentScores = [0,0,0]
+		}
+	}
 }
