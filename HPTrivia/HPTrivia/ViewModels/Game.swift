@@ -101,7 +101,7 @@ class Game {
 			let data = try Data(contentsOf: savePath)
 			recentScores = try JSONDecoder().decode([Int].self, from: data)
 		} catch {
-			var recentScores = [0,0,0]
+			let recentScores = [0,0,0]
 		}
 	}
 }
