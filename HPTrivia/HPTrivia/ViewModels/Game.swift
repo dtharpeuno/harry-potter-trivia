@@ -26,9 +26,9 @@ class Game {
 	
 	let savePath = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0].appending(path: "RecentScores")
 	
-	init(
+	init() {
 		loadScores()
-	)
+	}
 	
 	
 	func startGame() {
