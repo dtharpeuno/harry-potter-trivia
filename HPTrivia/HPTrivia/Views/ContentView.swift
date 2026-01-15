@@ -55,12 +55,11 @@ struct ContentView: View {
 		let sound = Bundle.main.path(forResource: "magic-in-the-air", ofType: "mp3")
 		audioPlayer = try! AVAudioPlayer(contentsOf: URL(filePath: sound!))
 		audioPlayer?.numberOfLoops = -1
-//		audioPlayer?.play()
+		audioPlayer?.play()
 	}
 }
 
 #Preview {
 	ContentView()
 		.environment(Game())
-//		.preferredColorScheme(.dark)
 }
