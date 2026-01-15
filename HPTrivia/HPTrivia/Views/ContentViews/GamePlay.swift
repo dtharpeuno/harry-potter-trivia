@@ -17,6 +17,7 @@ struct GamePlay: View {
 	
 	@State private var musicPlayer: AVAudioPlayer!
 	@State private var sfxPlayer: AVAudioPlayer!
+	
 	@State private var animateViewIn = false
 	@State private var revealHint = false
 	@State private var revealBook = false
@@ -65,7 +66,7 @@ struct GamePlay: View {
 									.transition(.scale)
 							}
 						}
-						.animation(.easeInOut(duration: 2), value: animateViewIn)
+						.animation(.easeInOut(duration: animateViewIn ? 2 : 0), value: animateViewIn)
 						
 						Spacer()
 						
@@ -108,7 +109,7 @@ struct GamePlay: View {
 										}
 								}
 							}
-							.animation(.easeOut(duration: 1.5).delay(2), value: animateViewIn)
+							.animation(.easeOut(duration: animateViewIn ? 1.5 : 0).delay(animateViewIn ? 2 : 0), value: animateViewIn)
 							
 							Spacer()
 							
@@ -158,7 +159,7 @@ struct GamePlay: View {
 										}
 								}
 							}
-							.animation(.easeOut(duration: 1.5).delay(2), value: animateViewIn)
+							.animation(.easeOut(duration: animateViewIn ? 1.5 : 0).delay(animateViewIn ? 2 : 0), value: animateViewIn)
 						}
 						.padding()
 						
@@ -195,7 +196,7 @@ struct GamePlay: View {
 											}
 										}
 									}
-									.animation(.easeOut(duration: 1).delay(1.5), value: animateViewIn)
+									.animation(.easeOut(duration: animateViewIn ? 1 : 0).delay(animateViewIn ? 1.5 : 0), value: animateViewIn)
 									// wrong
 								} else {
 									VStack {
@@ -223,7 +224,7 @@ struct GamePlay: View {
 											.disabled(wrongAnswersTapped.contains(answer))
 										}
 									}
-									.animation(.easeOut(duration: 1).delay(1.5), value: animateViewIn)
+									.animation(.easeOut(duration: animateViewIn ? 1 : 0).delay(animateViewIn ? 1.5 : 0), value: animateViewIn)
 								}
 							}
 						}
@@ -255,7 +256,7 @@ struct GamePlay: View {
 								}
 						}
 					}
-					.animation(.easeInOut(duration: 1).delay(2), value: tappedCorrectAnswer)
+					.animation(.easeInOut(duration: animateViewIn ? 1 : 0).delay(animateViewIn ? 2 : 0), value: tappedCorrectAnswer)
 					
 					Spacer()
 					
@@ -266,7 +267,7 @@ struct GamePlay: View {
 								.transition(.scale.combined(with: .offset(y: -geo.size.height/2)))
 						}
 					}
-					.animation(.easeInOut(duration: 1).delay(1), value: tappedCorrectAnswer)
+					.animation(.easeInOut(duration: tappedCorrectAnswer ? 1 : 0).delay(tappedCorrectAnswer ? 1 : 0), value: tappedCorrectAnswer)
 					
 					Spacer()
 					
@@ -288,7 +289,17 @@ struct GamePlay: View {
 					VStack {
 						if tappedCorrectAnswer {
 							Button("Next Level >") {
+								animateViewIn = false
+								revealHint = false
+								revealBook = false
+								tappedCorrectAnswer = false
+								wrongAnswersTapped = []
+								movePointsToScrore = false
+								game.newQuestion()
 								
+								DispatchQueue.main.asyncAfter(deadline: .now() + 0.5)  {
+									animateViewIn = true
+								}
 							}
 							.font(.largeTitle)
 							.buttonStyle(.borderedProminent)
@@ -303,7 +314,7 @@ struct GamePlay: View {
 							}
 						}
 					}
-					.animation(.easeInOut(duration: 2.7).delay(2.7), value: tappedCorrectAnswer)
+					.animation(.easeInOut(duration: tappedCorrectAnswer ? 2.7 : 0).delay(tappedCorrectAnswer ? 2.7 : 0), value: tappedCorrectAnswer)
 					
 					Spacer()
 					Spacer()
@@ -320,7 +331,7 @@ struct GamePlay: View {
 				animateViewIn = true
 			}
 			DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-				playMusic()
+//				playMusic()
 			}
 		}
 	}
@@ -352,7 +363,7 @@ struct GamePlay: View {
 		sfxPlayer = try! AVAudioPlayer(contentsOf: URL(filePath: sound!))
 		sfxPlayer.play()
 	}
-	
+
 }
 
 #Preview {
