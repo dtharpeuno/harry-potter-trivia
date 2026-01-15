@@ -40,7 +40,7 @@ class Store {
 				// purchase successful, but need to verify transaction
 				case .success(let verificationResult):
 				switch verificationResult {
-					case .unverified(let signedType, let verificationError):
+				case .unverified(_, let verificationError):
 						print("Error \(verificationError)")
 					
 					case .verified(let signedType):

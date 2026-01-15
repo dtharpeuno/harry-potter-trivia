@@ -11,8 +11,6 @@ struct SelectBooks: View {
 	@Environment(\.dismiss) private var dismiss
 	@Environment(Game.self) private var game
 	
-	@State private var showTempAlert = false
-	
 	private var store = Store()
 	
 	var activeBooks: Bool {
@@ -42,10 +40,13 @@ struct SelectBooks: View {
 					LazyVGrid(columns: [GridItem(), GridItem()]) {
 						ForEach(game.bookQuestions.books) {
 							book in
-							if book.status == .active {
+							if book.status == .active || (book.status == .locked && store.purchased.contains(book.image)){
 								ActiveBook(book: book)
 									.onTapGesture {
 										game.bookQuestions.changeStatus(of: book.id, to: .inactive)
+									}
+									.task {
+										game.bookQuestions.changeStatus(of: book.id, to: .active)
 									}
 							} else if book.status == .inactive {
 								InactiveBook(book: book)
@@ -55,9 +56,12 @@ struct SelectBooks: View {
 							} else {
 								LockedBook(book: book)
 								.onTapGesture {
-									// adding in app purchases before
-									showTempAlert.toggle()
-									game.bookQuestions.changeStatus(of: book.id, to: .active)
+									let product = store.products[book.id-4]
+									
+									Task {
+										await store.purchase(product)
+									}
+									
 								}
 								
 							}
@@ -84,9 +88,6 @@ struct SelectBooks: View {
 			.foregroundStyle(.black)
 		}
 		.interactiveDismissDisabled()
-		.alert("You purchased a new questions pack!!", isPresented: $showTempAlert) {
-			
-		}
 		.task {
 			await store.loadProducts()
 		}
